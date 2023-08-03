@@ -1,0 +1,120 @@
+@media screen and (max-width: 600px) {
+  .filter-and-task {
+    flex-direction: column;
+  }
+
+  .task-actions {
+    margin-left: 0;
+  }
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+  
+  #addButton {
+    background-color: #4CAF50;
+    margin-left: 5px;
+    margin-right: 5px;
+    color: white;
+    border: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  #addButton:hover {
+    background-color: #45a049;
+  }
+  
+  /* Align the filter and task input bar in the same row */
+  .filter-and-task {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Add some margin between the filter and the task input */
+  .filter {
+    margin-right: 10px;
+  }
+  
+  .filter label {
+    margin-right: 5px;
+  }
+  
+  #taskInput {
+    flex: 1; /* Take remaining width */
+    padding: 10px;
+  }
+  
+  #taskList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .task {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    padding-right: 40px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    word-break: break-all;
+    overflow-wrap: break-word;
+  }
+  
+  .task-actions button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    font-size: 14px;
+    margin-left: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .task-actions button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Align the "Complete" and "Delete" buttons in the same row */
+  .task-actions {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+  }
+  .task-actions button.delete {
+    background-color: #f44336;
+    color: white;
+  }
+  .completed-task span {
+    text-decoration: line-through;
+    color: #888;
+  }
+  .task-actions .edit {
+    background-color: #007bff;
+  }
+  
+  .task-actions .edit:hover {
+    background-color: #0056b3;
+  }
+  
+  
