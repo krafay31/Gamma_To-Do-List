@@ -5,7 +5,6 @@ const app = express();
 const PORT = 3000;
 const cors = require('cors');
 
-
 const mongoURL = 'mongodb+srv://GammaCities:RafayRehman1@gammacities.7guo0w9.mongodb.net/?retryWrites=true&w=majority'; // Replace with your MongoDB URL
 const dbName = 'GammaCities'; // Replace with your preferred database name
 
@@ -31,27 +30,18 @@ mongoose
 // Import the Mongoose model
 const Task = require('./schema');
 
-//login
-
-
 // Get all tasks
 app.get('/api/tasks', async (req, res) => {
   try {
     const tasks = await Task.find();
-    res.json(tasks); // Send the tasks data as JSON instead of rendering the template
+    res.json(tasks);
   } catch (error) {
     console.error('Error fetching tasks:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
-
 // Route handler for the root URL '/'
-app.get('/', (req, res) => {
-  res.redirect('/todo');
-});
-
-// Route handler for '/todo'
-app.get('/todo', async (req, res) => {
+app.get('/', async (req, res) => {
   try {
     const tasks = await Task.find();
     res.render('To-Do-List', { tasks });
@@ -133,6 +123,10 @@ app.delete('/api/tasks/:id', async (req, res) => {
 });
 
 
+
+
+
 app.listen(PORT, () => {
   console.log('Server listening on PORT', PORT);
 });
+

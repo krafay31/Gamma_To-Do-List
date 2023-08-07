@@ -2,48 +2,42 @@ let tasks = [];
 
 async function fetchTasks() {
   try {
+    // Fetch all tasks from the server
     const response = await fetch('/api/tasks');
     if (!response.ok) {
       throw new Error('Failed to fetch tasks from the server.');
     }
     const data = await response.json();
-    tasks = data;
+    tasks = data; // Update the tasks array with data from the server
+    return tasks; // Resolve the Promise with the updated tasks array
   } catch (error) {
     console.error('Error fetching tasks:', error);
     throw error;
   }
 }
 
-async function addTask() {
+// Call fetchTasks on page load
+
+
+function addTask() {
   const taskInput = document.getElementById('taskInput');
   const newTask = taskInput.value.trim();
   if (newTask !== '') {
-    try {
-      const response = await fetch('/api/tasks', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text: newTask }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to add task.');
-      }
-
-      taskInput.value = '';
-      await fetchTasks(); // Fetch tasks again to update the tasks array
-      displayTasks();
-    } catch (error) {
-      console.error('Error adding task:', error);
-    }
-  }
-}
-
-function handleKeyUp(event) {
-  if (event.key === 'Enter') {
-    event.preventDefault(); // Prevent the default behavior of the Enter key
-    addTask(); // Add the new task
+    // Use fetch to send the new task to the server for saving
+    fetch('/api/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text: newTask }),
+    })
+      .then((response) => response.json())
+      .then((task) => {
+        tasks.push(task);
+        taskInput.value = '';
+        displayTasks();
+      })
+      .catch((error) => console.error('Error adding task:', error));
   }
 }
 
@@ -175,10 +169,12 @@ function displayTasks(filter = 'all') {
     taskList.insertBefore(taskElement, taskList.firstChild); // Insert the new task at the beginning of the list
   });
 }
-fetchTasks()
+
+
+/*fetchTasks()
   .then(() => {
     displayTasks(); // Display the tasks on the page after data is fetched and tasks array is updated
   })
   .catch((error) => {
     console.error('Error fetching tasks:', error);
-  });
+  });*/
