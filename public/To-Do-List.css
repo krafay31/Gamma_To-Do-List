@@ -10,11 +10,19 @@
 
 
 body {
-    font-family: Arial, sans-serif;
-  }
+  font-family: Arial, sans-serif;
+  /* Add the background image */
+  background-image:url('images/To-Do-List.jpg');
+  /* Adjust the background image properties as needed */
+  background-size: auto;
+  backdrop-filter: blur(1.5px);
+  background-position: center;
+  background-repeat: repeat;
+}
   
   .container {
     max-width: 500px;
+    min-width: auto;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;
@@ -22,9 +30,12 @@ body {
   }
   
   h1 {
+    background-color: #fcead9;
     text-align: center;
   }
-  
+  .background{
+    
+  }
   #addButton {
     background-color: #4CAF50;
     margin-left: 5px;
@@ -107,7 +118,17 @@ body {
   }
   .completed-task span {
     text-decoration: line-through;
-    color: #888;
+    color: #000000;
+  }
+
+  .new-task {
+    background-color: whitesmoke; /* Red */
+  }
+  .completed-task {
+    background-color: #6cfc84; /* Green */
+  }
+  .edited-task {
+    background-color: #edff89; /* Orange */
   }
   .task-actions .edit {
     background-color: #007bff;

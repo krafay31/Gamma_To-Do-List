@@ -71,7 +71,7 @@ function initializeRouter() {
   router.delete('/:id', async (req, res) => {
     try {
       const taskId = req.params.id;
-      const result = await tasksCollection.deleteOne({ _id: ObjectId(taskId) });
+      const result = await Task.deleteOne({ _id: ObjectId(taskId) });
       if (result.deletedCount > 0) {
         res.json({ message: 'Task deleted.' });
       } else {
@@ -82,8 +82,10 @@ function initializeRouter() {
       res.status(500).json({ message: 'Server error' });
     }
   });
+  
 
   return router;
+
 }
 
 module.exports = initializeRouter;

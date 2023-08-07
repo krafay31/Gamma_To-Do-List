@@ -3,12 +3,17 @@ const mongoose = require('mongoose');
 const path = require('path');
 const app = express();
 const PORT = 3000;
+const cors = require('cors');
+
 
 const mongoURL = 'mongodb+srv://GammaCities:RafayRehman1@gammacities.7guo0w9.mongodb.net/?retryWrites=true&w=majority'; // Replace with your MongoDB URL
 const dbName = 'GammaCities'; // Replace with your preferred database name
 
 // Middleware to parse JSON data
 app.use(express.json());
+
+// Enable CORS for all routes
+app.use(cors());
 
 // View engine setup
 app.set('view engine', 'ejs');
@@ -20,16 +25,31 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Mongoose connection
 mongoose
   .connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true, dbName: dbName })
-  .then(() => console.log('Connected to MongoDB'))
+  .then(() => console.log('Connected to MongoDB Atlas'))
   .catch((error) => console.error('Error connecting to MongoDB:', error));
 
 // Import the Mongoose model
 const Task = require('./schema');
 
-// Route handler for the root URL '/'
-app.get('/', async (req, res) => {
+// Get all tasks
+app.get('/api/tasks', async (req, res) => {
   try {
-    // Fetch all tasks from the database using Mongoose model
+    const tasks = await Task.find();
+    res.json(tasks); // Send the tasks data as JSON instead of rendering the template
+  } catch (error) {
+    console.error('Error fetching tasks:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Route handler for the root URL '/'
+app.get('/', (req, res) => {
+  res.redirect('/todo');
+});
+
+// Route handler for '/todo'
+app.get('/todo', async (req, res) => {
+  try {
     const tasks = await Task.find();
     res.render('To-Do-List', { tasks });
   } catch (error) {
@@ -41,7 +61,7 @@ app.get('/', async (req, res) => {
 // Add a new task to the database
 app.post('/api/tasks', async (req, res) => {
   try {
-    const { text } = req.body;
+    const { text } = req.body; 
     if (text) {
       const newTask = new Task({ text, completed: false });
       const savedTask = await newTask.save();
@@ -97,12 +117,12 @@ app.put('/api/tasks/:id', async (req, res) => {
 app.delete('/api/tasks/:id', async (req, res) => {
   try {
     const taskId = req.params.id;
-    const task = await Task.findById(taskId);
-    if (!task) {
-      return res.status(404).json({ message: 'Task not found.' });
+    const result = await Task.deleteOne({ _id: taskId }); // Use deleteOne instead of remove
+    if (result.deletedCount > 0) {
+      res.json({ message: 'Task deleted.' });
+    } else {
+      res.status(404).json({ message: 'Task not found.' });
     }
-    await task.remove();
-    res.json({ message: 'Task deleted.' });
   } catch (error) {
     console.error('Error deleting task:', error);
     res.status(500).json({ message: 'Server error' });
