@@ -119,7 +119,16 @@ async function editTask(index) {
   }
 }
 
-
+function setBackgroundImage(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function () {
+      document.body.style.backgroundImage = `url(${reader.result})`;
+    };
+    reader.readAsDataURL(file);
+  }
+}
 
 function filterTasks() {
   const filter = document.getElementById('filter').value;

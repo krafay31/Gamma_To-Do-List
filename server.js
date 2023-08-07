@@ -31,6 +31,9 @@ mongoose
 // Import the Mongoose model
 const Task = require('./schema');
 
+//login
+
+
 // Get all tasks
 app.get('/api/tasks', async (req, res) => {
   try {
@@ -128,6 +131,7 @@ app.delete('/api/tasks/:id', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 
 app.listen(PORT, () => {
   console.log('Server listening on PORT', PORT);
