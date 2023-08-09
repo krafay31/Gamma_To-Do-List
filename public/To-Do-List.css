@@ -22,7 +22,7 @@ body {
   
   .container {
     max-width: 500px;
-    min-width: auto;
+    min-width: 280px;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;
@@ -33,9 +33,7 @@ body {
     background-color: #fcead9;
     text-align: center;
   }
-  .background{
-    
-  }
+  
   #addButton {
     background-color: #4CAF50;
     margin-left: 5px;
@@ -57,12 +55,16 @@ body {
   /* Align the filter and task input bar in the same row */
   .filter-and-task {
     display: flex;
+   flex-direction: auto;
     align-items: center;
   }
   
   /* Add some margin between the filter and the task input */
   .filter {
+    display: flex;
+    align-items: center;
     margin-right: 10px;
+    flex-direction: auto;
   }
   
   .filter label {

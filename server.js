@@ -1,12 +1,15 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const path = require('path');
 const app = express();
 const PORT = 3000;
 const cors = require('cors');
+const session = require('express-session');
 
 const mongoURL = 'mongodb+srv://GammaCities:RafayRehman1@gammacities.7guo0w9.mongodb.net/?retryWrites=true&w=majority'; // Replace with your MongoDB URL
-const dbName = 'GammaCities'; // Replace with your preferred database name
+const dbName = 'GammaCities'; 
 
 // Middleware to parse JSON data
 app.use(express.json());
@@ -21,14 +24,107 @@ app.set('views', path.join(__dirname, 'views'));
 // Serve static files from the public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Middleware to parse JSON data
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
 // Mongoose connection
 mongoose
   .connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true, dbName: dbName })
   .then(() => console.log('Connected to MongoDB Atlas'))
   .catch((error) => console.error('Error connecting to MongoDB:', error));
 
+// User model
+const User = require('./user');
+
+app.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: true
+}));
+
+const flash = require('connect-flash');
+app.use(flash());
+
+
+const authRoutes = require('./auth'); // Update the path based on your project structure
+app.use('/', authRoutes);
+
+app.use((req, res, next) => {
+    res.locals.errorMessage = req.flash('error');
+    next();
+});
+
 // Import the Mongoose model
 const Task = require('./schema');
+
+// Routes
+app.get('/', (req, res) => {
+  res.redirect('/login');
+});
+
+app.get('/login', (req, res) => {
+  res.render('login');
+});
+
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      req.flash('error', 'User not found');
+      return res.redirect('/login');
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (passwordMatch) {
+      res.redirect('/todo');
+    } else {
+      // Passwords do not match, redirect back to login page with error message
+      res.redirect('/login?error=invalid_password');
+    }
+  } catch (error) {
+    console.error('Error during login:', error);
+    res.redirect('/login?error=login_error');
+  }
+});
+
+app.get('/register', (req, res) => {
+  res.render('register');
+});
+
+app.post('/register', async (req, res) => {
+  try {
+      const { email, password } = req.body;
+
+      // Check if a user with the same email already exists
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+          req.flash('error', 'Email already registered');
+          return res.redirect('/register');
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = new User({
+          email: email,
+          password: hashedPassword
+      });
+
+      // Attempt to save the user to the database
+      await user.save();
+      console.log('User registered successfully:', user);
+      res.redirect('/login');
+  } catch (error) {
+      console.error('Error registering user:', error);
+      res.redirect('/register');
+  }
+});
+
+
+
 
 // Get all tasks
 app.get('/api/tasks', async (req, res) => {
@@ -41,7 +137,7 @@ app.get('/api/tasks', async (req, res) => {
   }
 });
 // Route handler for the root URL '/'
-app.get('/', async (req, res) => {
+app.get('/todo', async (req, res) => {
   try {
     const tasks = await Task.find();
     res.render('To-Do-List', { tasks });
