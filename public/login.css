@@ -36,6 +36,11 @@ button:hover {
   background-color: #369ef4;
 }
 
+h2 {
+  color: rgb(53, 53, 53);
+}
+
+
 .imgcontainer {
   align-item:center;
   margin: 12px 12px 2px 12px;
@@ -83,4 +88,10 @@ span.psw {
   input[type=text], input[type=password] {
     padding: 10px 15px; /* Adjust padding for smaller screens */
   }
+}
+
+.flash-message{
+ color: #f81100;
+ text-align: center;
+ font-weight: 700;
 }

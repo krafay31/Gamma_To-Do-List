@@ -16,6 +16,39 @@ async function fetchTasks() {
   }
 }
 
+function handleDragStart(event, index) {
+  event.dataTransfer.setData('text/plain', index);
+}
+
+function handleDragOver(event, index) {
+  event.preventDefault();
+  const draggedOverTask = document.querySelector('.dragging-over');
+  if (draggedOverTask) {
+    draggedOverTask.classList.remove('dragging-over');
+  }
+  event.target.classList.add('dragging-over');
+}
+
+function handleDrop(event, dropIndex) {
+  event.preventDefault();
+
+  const dragIndex = event.dataTransfer.getData('text/plain');
+  const dragTask = tasks[dragIndex];
+
+  tasks.splice(dragIndex, 1);
+  tasks.splice(dropIndex, 0, dragTask);
+
+  displayTasks();
+}
+
+function handleDragEnd() {
+  const draggingOverTask = document.querySelector('.dragging-over');
+  if (draggingOverTask) {
+    draggingOverTask.classList.remove('dragging-over');
+  }
+}
+
+
 // Call fetchTasks on page load
 
 
@@ -112,6 +145,36 @@ async function editTask(index) {
     }
   }
 }
+/*
+// Function to handle adding an image to a task
+async function addImageToTask(index) {
+  const selectedFile = prompt('Select an image file:');
+  
+  if (!selectedFile) {
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('image', selectedFile);
+
+  try {
+    const response = await fetch(`/api/tasks/${tasks[index]._id}/add-image`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error('Image upload failed.');
+    }
+
+    const data = await response.json();
+    tasks[index].image = data.imageReference;
+    displayTasks();
+  } catch (error) {
+    console.error('Error adding image to task:', error);
+  }
+}
+*/
 
 function setBackgroundImage(event) {
   const file = event.target.files[0];
@@ -148,8 +211,15 @@ function displayTasks(filter = 'all') {
   const filteredTasks =
     filter === 'all' ? tasks : tasks.filter((task) => (filter === 'completed' ? task.completed : !task.completed));
 
-  filteredTasks.forEach((task, index) => {
-    const taskElement = document.createElement('div');
+    filteredTasks.forEach((task, index) => {
+      const taskElement = document.createElement('div');
+      taskElement.classList.add('task');
+      // Add the draggable attribute and the event listeners for drag and drop
+      taskElement.setAttribute('draggable', true);
+      taskElement.addEventListener('dragstart', (event) => handleDragStart(event, index));
+      taskElement.addEventListener('dragover', (event) => handleDragOver(event, index));
+      taskElement.addEventListener('drop', (event) => handleDrop(event, index));
+      taskElement.addEventListener('dragend', handleDragEnd);
     taskElement.classList.add('task');
     if (task.completed) {
       taskElement.classList.add('completed-task');
@@ -159,12 +229,13 @@ function displayTasks(filter = 'all') {
       taskElement.classList.add('new-task');
     }
     taskElement.innerHTML = `
-      <span>${task.text}</span>
-      <div class="task-actions">
-        <button class="complete" onclick="toggleComplete(${index})">&#10003;</button>
-        <button class="edit" onclick="editTask(${index})">&#9998;</button>
-        <button class="delete" onclick="removeTask(${index})">&#128465;</button>
-      </div>
+    <span>${task.text}</span>
+    <div class="task-actions">
+    <button class="complete" onclick="toggleComplete(${index})">&#10003;</button>
+    <button class="edit" onclick="editTask(${index})">&#9998;</button>
+    <button class="delete" onclick="removeTask(${index})">&#128465;</button>
+
+    </div>
     `;
     taskList.insertBefore(taskElement, taskList.firstChild); // Insert the new task at the beginning of the list
   });
@@ -177,4 +248,10 @@ function displayTasks(filter = 'all') {
   })
   .catch((error) => {
     console.error('Error fetching tasks:', error);
+
+
+        <button class="image" onclick="addImageToTask(${index})">Add Image</button>
   });*/
+
+
+  

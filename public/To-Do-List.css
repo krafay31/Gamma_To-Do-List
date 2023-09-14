@@ -1,10 +1,11 @@
 @media screen and (max-width: 600px) {
-  .filter-and-task {
-    flex-direction: column;
+  #taskInput {
+    max-width: 100%; /* Adjust the width as needed */
   }
+  
 
-  .task-actions {
-    margin-left: 0;
+  .filter {
+    max-width: 40%; /* Adjust the width as needed */
   }
 }
 
@@ -12,39 +13,45 @@
 body {
   font-family: Arial, sans-serif;
   /* Add the background image */
-  background-image:url('images/To-Do-List.jpg');
+  background-color: #19181a;
   /* Adjust the background image properties as needed */
-  background-size: auto;
+  background-size: cover;
   backdrop-filter: blur(1.5px);
   background-position: center;
   background-repeat: repeat;
+  overflow-x: hidden;
 }
   
   .container {
-    max-width: 500px;
+    align-content: center;
+    max-width: 90%;
     min-width: 280px;
     margin: 0 auto;
     padding: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid #242424;
     border-radius: 8px;
+    background-color: #414046;
   }
   
   h1 {
-    background-color: #fcead9;
+    margin-top: auto;
+    margin-bottom: 10px;
+    color: rgb(233, 233, 233);
     text-align: center;
+    font-size: 45px;
   }
   
   #addButton {
     background-color: #4CAF50;
-    margin-left: 5px;
-    margin-right: 5px;
-    color: white;
+    color: rgb(255, 230, 230);
     border: none;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
     padding: 10px 20px;
     font-size: 14px;
     cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 2px 2px rgb(89, 138, 87) ;
     transition: background-color 0.3s;
   }
   
@@ -55,31 +62,55 @@ body {
   /* Align the filter and task input bar in the same row */
   .filter-and-task {
     display: flex;
-   flex-direction: auto;
+    flex-direction: auto;
     align-items: center;
+    border-radius: 10px;
   }
   
   /* Add some margin between the filter and the task input */
   .filter {
     display: flex;
     align-items: center;
-    margin-right: 10px;
+    margin-left: 115px;
+    margin-right: auto;
     flex-direction: auto;
+    border-radius: 10px;
+    max-width: 30%; /* Adjust the width as needed */
   }
   
   .filter label {
+    color: #ffffff;
     margin-right: 5px;
+    border-radius: 10px;
+  }
+  #input{
+    width: 100%;
+    border-radius: 10px;
+  }
+
+  #taskForm {
+    display: flex;
+    align-items: center;
   }
   
   #taskInput {
+  
     flex: 1; /* Take remaining width */
     padding: 10px;
+    max-width: 500px;
+    min-width: 100%;/* Set a maximum width */
+    margin-right: 10px; 
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-right: 10px;
   }
-  
   #taskList {
+    margin-top: 15px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    max-height: 400px; /* Adjust the height as needed */
+    overflow-y: auto;
   }
   
   .task {
@@ -140,4 +171,34 @@ body {
     background-color: #0056b3;
   }
   
+  .image-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+    overflow: hidden;
+  }
   
+  .image-box img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .task-list .task {
+    cursor: pointer;
+    /* Add styling for the draggable task */
+  }
+  
+  .task-list .task.dragging {
+    opacity: 0.6;
+  }
+  
+  .task-list .task.dragging-over {
+    border: 2px dashed #ccc;
+    /* Add styling for the drop target */
+  }

@@ -7,15 +7,18 @@
 </head>
 <body>
   <div class="container">
+    <img src="images/gammanew.png" alt="logo" style= "text-align: left;" >
     <h1>To-Do List</h1>
     <div class="filter-and-task taskApp">
       <form id="taskForm">
-        <input type="text" id="taskInput" placeholder="Add new task..." onkeyup="handleKeyUp(event)">
+        <input type="file" id="imageInput" accept="image/*">
+        <input style="display: inline-flexbox; width: 100;" type="text" id="taskInput" placeholder="Add new task..." onkeyup="handleKeyUp(event)">
         <button id="addButton">Add</button>
+        
       </form>
       <div class="filter">
         <label for="filter">Filter:</label>
-        <select id="filter" onchange="filterTasks()">
+        <select style="border-radius: 10px; box-shadow: 2px gray;" id="filter" onchange="filterTasks()">
           <option value="all">All</option>
           <option value="active">Active</option>
           <option value="completed">Completed</option>

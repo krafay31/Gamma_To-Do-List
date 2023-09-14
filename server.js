@@ -7,6 +7,7 @@ const app = express();
 const PORT = 3000;
 const cors = require('cors');
 const session = require('express-session');
+const imageRoutes = require('./image');
 
 const mongoURL = 'mongodb+srv://GammaCities:RafayRehman1@gammacities.7guo0w9.mongodb.net/?retryWrites=true&w=majority'; // Replace with your MongoDB URL
 const dbName = 'GammaCities'; 
@@ -47,6 +48,7 @@ const flash = require('connect-flash');
 app.use(flash());
 
 
+
 const authRoutes = require('./auth'); // Update the path based on your project structure
 app.use('/', authRoutes);
 
@@ -57,6 +59,9 @@ app.use((req, res, next) => {
 
 // Import the Mongoose model
 const Task = require('./schema');
+
+// Use the handleImageUpload router
+app.use('/', imageRoutes);
 
 // Routes
 app.get('/', (req, res) => {
@@ -217,6 +222,7 @@ app.delete('/api/tasks/:id', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 
 
 

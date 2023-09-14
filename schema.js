@@ -9,6 +9,10 @@ const tasksSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
+image: {
+  type: String, // Store the image reference here
+},
 });
 
 module.exports = mongoose.model('Task', tasksSchema);

@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="login.css">
 </head>
 <body class="container">
-<h2>To-Do-List</h2>
+<h2>To-Do-List login</h2>
 
 <form action="/login" method="post">
   <div class="imgcontainer">
@@ -23,6 +23,13 @@
     <label>
       <input type="checkbox" checked="checked" name="remember"> Remember me
     </label>
+    <div class="flash-message">
+      <% if (errorMessage) { %>
+        <div class="alert alert-danger">
+          <%= errorMessage %>
+        </div>
+      <% } %>
+    </div>
   </div>
 
   <div class="container" style="background-color:#f1f1f1">
