@@ -9,7 +9,7 @@ const cors = require('cors');
 const session = require('express-session');
 const imageRoutes = require('./image');
 
-const mongoURL = 'mongodb+srv://GammaCities:RafayRehman1@gammacities.7guo0w9.mongodb.net/?retryWrites=true&w=majority'; // Replace with your MongoDB URL
+const mongoURL =  // Replace with your MongoDB URL
 const dbName = 'GammaCities'; 
 
 // Middleware to parse JSON data
